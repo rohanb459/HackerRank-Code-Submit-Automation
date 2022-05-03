@@ -1,7 +1,9 @@
 const puppeteer = require("puppeteer");
+const codesAnswer = require("./codesAnswer");
 const logInLink = `https://www.hackerrank.com/auth/login`;
 const userEmail = `xateg54742@wowcg.com`;
 const userPassword = `Rohan@123`;
+// const codesAnswer = require("./codesAnswer");
 let browserOpenPromise = puppeteer.launch(
     {
         headless: false,
@@ -44,7 +46,7 @@ browserOpenPromise.then(function(browser){
     return allChallengesPromise;
 }).then(function(questionsArr){
     console.log("questionArr length is : ", questionsArr.length);
-    questionSolver(questionsArr[0]);
+    questionSolver(page,questionsArr[0],codesAnswer.answers[0]);
 })
     
 
@@ -68,9 +70,18 @@ function waitAndClick(selector, cPage)
 }
 
 
-function questionSolver(question){
+function questionSolver(page,question, answer){
     return new Promise(function(resolve, reject){
         let questionWillBeClicked = question.click();
-        return questionWillBeClicked;
+        questionWillBeClicked.then(function(){
+            let editorInFocusPromise = waitAndClick('.monaco-editor.no-user-select.vs',page);
+            editorInFocusPromise.then(function(){
+                return waitAndClick('input[type="checkbox"]',page);
+            }).then(function(){
+                return page.waitForSelector('textarea.custominput', page);
+            }).then(function(){
+                return page.type('textarea.custominput', answer, {delay: 10});
+            })
+        });
     })
 }
