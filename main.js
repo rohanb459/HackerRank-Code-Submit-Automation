@@ -1,7 +1,7 @@
 const puppeteer = require("puppeteer");
 const codesAnswer = require("./codesAnswer");
 const logInLink = `https://www.hackerrank.com/auth/login`;
-const userEmail = `xateg54742@wowcg.com`;
+const userEmail = `vokkiyafyo@vusra.com`;
 const userPassword = `Rohan@123`;
 // const codesAnswer = require("./codesAnswer");
 let browserOpenPromise = puppeteer.launch(
@@ -80,7 +80,34 @@ function questionSolver(page,question, answer){
             }).then(function(){
                 return page.waitForSelector('textarea.custominput', page);
             }).then(function(){
-                return page.type('textarea.custominput', answer, {delay: 10});
+                return page.type('textarea.custominput', answer, {delay: 0});
+            }).then(function(){
+                let ctrlIsPressed = page.keyboard.down('Control');
+                return ctrlIsPressed;
+            }).then(function(){
+                let AisPressed = page.keyboard.press('A', {delay: 500});
+                return AisPressed;
+            }).then(function(){
+                let XisPressed = page.keyboard.press('X', {delay: 500});
+                return XisPressed;
+            }).then(function(){
+                let ctrlIsUnpressed = page.keyboard.up('Control');
+                return ctrlIsUnpressed;
+            }).then(function(){
+                let mainEditorInFocusPromise = waitAndClick('.monaco-editor.no-user-select.vs',page);
+                return mainEditorInFocusPromise;
+            }).then(function(){
+                let ctrlIsPressed = page.keyboard.down('Control');
+                return ctrlIsPressed;
+            }).then(function(){
+                let AisPressed = page.keyboard.press('A', {delay: 500});
+                return AisPressed;
+            }).then(function(){
+                let VisPressed = page.keyboard.press('V', {delay: 500});
+                return VisPressed;
+            }).then(function(){
+                let submitCodeBtnIsPressed = page.click('.hr-monaco-submit');
+                return submitCodeBtnIsPressed;
             })
         });
     })
